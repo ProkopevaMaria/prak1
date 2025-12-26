@@ -1,0 +1,181 @@
+#шахматный конь
+#1
+x1 = int(input("Введите номер столбца первой клетки (1-8): "))
+y1 = int(input("Введите номер строки первой клетки (1-8): "))
+x2 = int(input("Введите номер столбца второй клетки (1-8): "))
+y2 = int(input("Введите номер строки второй клетки (1-8): "))
+
+if x1 < 1 or x1 > 8 or y1 < 1 or y1 > 8 or x2 < 1 or x2 > 8 or y2 < 1 or y2 > 8:
+    print("Ошибка!")
+else:
+    dx = abs(x1 - x2)
+    dy = abs(y1 - y2)
+
+    if (dx == 1 and dy == 2) or (dx == 2 and dy == 1):
+        print("Да, конь может попасть с первой клетки на вторую одним ходом")
+    else:
+        print("Нет, конь не может")
+
+
+#2
+K = int(input("Введите число K: "))
+N = int(input("Введите число N: "))
+
+sum_even = 0
+start = K
+end = N
+if K > N:
+    start = N
+    end = K
+current = start
+while current <= end:
+    if current % 2 == 0:
+        sum_even = sum_even + current
+    current = current + 1
+
+print("Сумма четных чисел от", K, "до", N, "равна:", sum_even)
+
+
+
+#3
+total = 0
+number = int(input("Введите число: "))
+while number != 0:
+    total = total + number
+    number = int(input("Введите число: "))
+#нажать0
+print("Сумма введенных чисел:", total)
+#4
+N = int(input("Введите число N: "))
+factorial = 1
+i = 1
+while i <= N:
+    factorial = factorial * i
+    i = i + 1
+print("Факториал числа", N, "равен:", factorial)
+
+
+
+
+
+#ДИнамическое программирование
+#1
+N = int(input("Введите номер числа Фибоначчи: "))
+if N == 0:
+    result = 0
+elif N == 1:
+    result = 1
+else:
+    fib_prev_prev = 0  # F(n-2)
+    fib_prev = 1  # F(n-1)
+    i = 2
+    while i <= N:
+        fib_current = fib_prev + fib_prev_prev
+        fib_prev_prev = fib_prev
+        fib_prev = fib_current
+        i = i + 1
+    result = fib_prev
+print(f"F({N}) = {result}")
+
+
+
+#2
+N = int(input("Введите длину полоски N: "))
+ways = [0] * (N + 1)
+ways[1] = 1
+if N >= 2:
+    ways[2] = 1
+if N >= 3:
+    ways[3] = 4
+if N >= 4:
+    i = 4
+    while i <= N:
+        ways[i] = ways[i - 1] + ways[i - 2] + ways[i - 3]
+        i = i + 1
+print(f"Количество способов добраться до клетки {N}: {ways[N]}")
+
+
+
+#3
+rows = 4
+cols = 6
+coins = [
+    [1, 1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0, 1],
+    [0, 40, 70, 0, 0, 1],
+    [100, 0, 0, 0, 0, 1]
+]
+max_coins = []
+for i in range(rows):
+    max_coins.append([0] * cols)
+max_coins[0][0] = coins[0][0]
+j = 1
+while j < cols:
+    max_coins[0][j] = max_coins[0][j - 1] + coins[0][j]
+    j = j + 1
+i = 1
+while i < rows:
+    max_coins[i][0] = max_coins[i - 1][0] + coins[i][0]
+    i = i + 1
+i = 1
+while i < rows:
+    j = 1
+    while j < cols:
+        from_top = max_coins[i - 1][j]
+        from_left = max_coins[i][j - 1]
+        if from_top > from_left:
+            max_coins[i][j] = from_top + coins[i][j]
+        else:
+            max_coins[i][j] = from_left + coins[i][j]
+        j = j + 1
+    i = i + 1
+print("Исх таблица с монетами:")
+for i in range(rows):
+    for j in range(cols):
+        print(f"{coins[i][j]:4}", end=" ")
+    print()
+
+print("\nТаблица максимальных сумм на пути к каждой клетке:")
+for i in range(rows):
+    for j in range(cols):
+        print(f"{max_coins[i][j]:4}", end=" ")
+    print()
+
+print(f"\nМаксимальное количество монет, которое можно собрать: {max_coins[rows - 1][cols - 1]}")
+print("\nПуть для сбора максимального количества монет:")
+
+path = []
+i = rows - 1
+j = cols - 1
+while i > 0 or j > 0:
+    path.append((i + 1, j + 1))
+    if i == 0:
+        j = j - 1
+    elif j == 0:
+        i = i - 1
+    else:
+        from_top = max_coins[i - 1][j]
+        from_left = max_coins[i][j - 1]
+        if from_top > from_left:
+            i = i - 1
+        else:
+            j = j - 1
+path.append((1, 1))
+path.reverse()
+
+print("Клетки по порядку:")
+for cell in path:
+    print(f"({cell[0]}, {cell[1]})", end=" ")
+    i_cell = cell[0] - 1
+    j_cell = cell[1] - 1
+    print(f"[{coins[i_cell][j_cell]} монет]", end="")
+
+    if cell != path[-1]:
+        print(" -> ", end="")
+print(f"\n\nПроверка: сумма монет по пути = ", end="")
+total_check = 0
+for cell in path:
+    i_cell = cell[0] - 1
+    j_cell = cell[1] - 1
+    total_check += coins[i_cell][j_cell]
+print(total_check)
