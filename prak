@@ -1,0 +1,85 @@
+#Рекурсивные функции final boss
+#1
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+print("Факториалы от 0 до 10:")
+n = 0
+while n <= 10:
+    print(f"factorial({n}) = {factorial(n)}")
+    n = n + 1
+num = int(input("\nВведите число для вычисления факториала: "))
+if num < 0:
+    print("Факториал отрицательного числа не определен")
+else:
+    result = factorial(num)
+    print(f"factorial({num}) = {result}")
+
+#2
+def remove_vowels(string):
+    vowels = "аеёиоуыэюяaeioueyoa9"
+    vowels = vowels + vowels.upper()
+
+    if string == "":
+        return ""
+    first_char = string[0]
+    rest_of_string = string[1:]
+
+    if first_char in vowels:
+        return remove_vowels(rest_of_string)
+    else:
+        return first_char + remove_vowels(rest_of_string)
+
+test_strings = [
+    "Привет",
+    "Пока",
+    "Уруйдаана",
+    "Новый ноутбук",
+    "Я люблю Python"
+]
+print("Удаление гласных:")
+for s in test_strings:
+    result = remove_vowels(s)
+    print(f"'{s}' -> '{result}'")
+#3
+def pascal_value(row, col):
+    if col == 0 or col == row:
+        return 1
+    return pascal_value(row - 1, col - 1) + pascal_value(row - 1, col)
+
+def pascal_row(n):
+    row = []
+    col = 0
+    while col <= n:
+        value = pascal_value(n, col)
+        row.append(value)
+        col = col + 1
+    return row
+print("Треугольник Паскаля:")
+print("Строка 0:", pascal_row(0))
+print("Строка 1:", pascal_row(1))
+print("Строка 2:", pascal_row(2))
+print("Строка 3:", pascal_row(3))
+print("Строка 4:", pascal_row(4))
+print("Строка 5:", pascal_row(5))
+
+print("\nВесь треугольник Паскаля до строки 6:")
+row_num = 0
+while row_num <= 6:
+    row = pascal_row(row_num)
+    spaces = " " * (6 - row_num) * 2
+    print(spaces, end="")
+    for num in row:
+        print(f"{num:4}", end=" ")
+    print()
+    row_num = row_num + 1
+n = int(input("\nВведите номер строки треугольника Паскаля: "))
+if n < 0:
+    print("Номер строки должен быть неотрицательным")
+else:
+    result = pascal_row(n)
+    print(f"Строка {n}: {result}")
+
+#4
