@@ -1,0 +1,113 @@
+#Вложенные циклы
+# Задача 1
+print("Задача 1:")
+x = 0
+while x <= 14:
+    num1 = 5 + x*15 + 3*225 + 2*3375 + 1*50625
+    num2 = 3 + 3*15 + 2*225 + x*3375 + 1*50625
+    total = num1 + num2
+    if total % 14 == 0:
+        print(f"x={x}, частное={total//14}")
+        break
+    x += 1
+
+# Задача 2
+print("\nЗадача 2:")
+p = 16
+while p <= 36:
+    num1 = 1 + 13*p + 7*p**2 + 6*p**3 + 2*p**4 + 11*p**5 + 10*p**6
+    num2 = 9 + 8*p + 10*p**2 + 4*p**3 + 2*p**4 + 0*p**5 + 15*p**6
+    total = num1 + num2
+    if total % (p-1) == 0:
+        print(f"p={p}")
+        break
+    p += 1
+
+# Задача 3
+print("\nЗадача 3:")
+x = 0
+while x <= 9:
+    num1 = 9 + 0*17 + 11*289 + x*4913
+    num2 = 8 + 14*15 + 8*225 + x*3375
+    total = num1 + num2
+    if total % 155 == 0:
+        print(f"x={x}, частное={total//155}")
+        break
+    x += 1
+
+# Задача 4
+print("\nЗадача 4:")
+min_total = None
+best_x = None
+best_y = None
+y = 0
+while y <= 10:
+    x = 0
+    while x <= 7:
+        num1 = 5 + x*11 + 4*121 + 0*1331 + y*14641
+        num2 = y*1 + x*8 + 3*64 + 5*512 + 2*4096
+        total = num1 + num2
+        if total % 117 == 0:
+            if min_total is None or total < min_total:
+                min_total = total
+                best_x = x
+                best_y = y
+        x += 1
+    y += 1
+print(f"x={best_x}, y={best_y}, частное={min_total//117}")
+
+# Задача 5
+print("\nЗадача 5:")
+count_7 = 0
+
+n = 2022
+oct_2022 = ""
+while n > 0:
+    oct_2022 = str(n % 8) + oct_2022
+    n //= 8
+
+max_len = 5737
+
+num1 = "7" + "0"*5736
+num2 = "6" + "0"*3908
+num3 = "5" + "0"*1991
+num4 = "4" + "0"*1980
+num5 = oct_2022.zfill(max_len)
+
+def add_oct(a, b):
+    res = []
+    carry = 0
+    i = len(a)-1
+    while i >= 0:
+        s = int(a[i]) + int(b[i]) + carry
+        res.append(str(s % 8))
+        carry = s // 8
+        i -= 1
+    if carry:
+        res.append(str(carry))
+    return ''.join(res[::-1])
+def sub_oct(a, b):
+    res = []
+    borrow = 0
+    i = len(a)-1
+    while i >= 0:
+        da = int(a[i]) - borrow
+        db = int(b[i])
+        if da < db:
+            da += 8
+            borrow = 1
+        else:
+            borrow = 0
+        res.append(str(da - db))
+        i -= 1
+    return ''.join(res[::-1]).lstrip('0')
+
+result = add_oct(num1, num2)
+result = sub_oct(result, num3)
+result = sub_oct(result, num4)
+result = sub_oct(result, num5)
+
+for ch in result:
+    if ch == '7':
+        count_7 += 1
+print(f"Количество цифр 7: {count_7}")
