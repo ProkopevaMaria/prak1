@@ -1,0 +1,116 @@
+#Двумерные массивы обработка числовой последовательности
+#1
+with open('40992.txt', 'r') as f:
+    numbers = [int(x) for x in f.read().split()]
+count_pairs = 0
+max_sum = 0
+i = 0
+while i < len(numbers) - 1:
+    a = numbers[i]
+    b = numbers[i + 1]
+
+    product = a * b
+    sum_ab = a + b
+
+    if product % 15 == 0:
+        if sum_ab % 7 == 0:
+            count_pairs = count_pairs + 1
+            if sum_ab > max_sum:
+                max_sum = sum_ab
+    i = i + 1
+print(f"Количество пар: {count_pairs}")
+print(f"Максимальная сумма: {max_sum}")
+
+#2
+with open('68279.txt', 'r') as f:
+    numbers = [int(x) for x in f.read().split()]
+
+max_ending_562 = 0
+i = 0
+while i < len(numbers):
+    if numbers[i] % 1000 == 562:
+        if numbers[i] > max_ending_562:
+            max_ending_562 = numbers[i]
+    i = i + 1
+
+print(f"Максимальный элемент, оканчивающийся на 562: {max_ending_562}")
+count_fours = 0
+max_sum_fours = 0
+i = 0
+while i < len(numbers) - 3:
+
+    a = numbers[i]
+    b = numbers[i + 1]
+    c = numbers[i + 2]
+    d = numbers[i + 3]
+    four = [a, b, c, d]
+    count_5digit = 0
+    j = 0
+    while j < 4:
+        if 10000 <= four[j] <= 99999:
+            count_5digit = count_5digit + 1
+        j = j + 1
+
+    if not (1 <= count_5digit <= 2):
+        i = i + 1
+        continue
+    count_mult3 = 0
+    count_mult7 = 0
+    j = 0
+    while j < 4:
+        if four[j] % 3 == 0:
+            count_mult3 = count_mult3 + 1
+        if four[j] % 7 == 0:
+            count_mult7 = count_mult7 + 1
+        j = j + 1
+    if count_mult3 >= count_mult7:
+        i = i + 1
+        continue
+    sum_four = a + b + c + d
+    if not (max_ending_562 < sum_four < 2 * max_ending_562):
+        i = i + 1
+        continue
+
+    count_fours = count_fours + 1
+    if sum_four > max_sum_fours:
+        max_sum_fours = sum_four
+    i = i + 1
+print(f"Количество четвёрок: {count_fours}")
+print(f"Максимальная сумма четвёрок: {max_sum_fours}")
+
+
+#3
+with open('39762.txt', 'r') as f:
+    numbers = [int(x) for x in f.read().split()]
+
+sum_odd = 0
+count_odd = 0
+i = 0
+while i < len(numbers):
+    if numbers[i] % 2 != 0:
+        sum_odd = sum_odd + numbers[i]
+        count_odd = count_odd + 1
+    i = i + 1
+if count_odd > 0:
+    avg_odd = sum_odd / count_odd
+else:
+    avg_odd = 0
+print(f"Среднее арифметическое нечетных элементов: {avg_odd}")
+
+count_pairs = 0
+max_sum_pairs = 0
+i = 0
+while i < len(numbers) - 1:
+    a = numbers[i]
+    b = numbers[i + 1]
+
+    condition1 = (a % 5 == 0) or (b % 5 == 0)
+    condition2 = (a < avg_odd) or (b < avg_odd)
+    if condition1 and condition2:
+        count_pairs = count_pairs + 1
+        sum_pair = a + b
+        if sum_pair > max_sum_pairs:
+            max_sum_pairs = sum_pair
+    i = i + 1
+print(f"Количество пар: {count_pairs}")
+print(f"Максимальная сумма пар: {max_sum_pairs}")
